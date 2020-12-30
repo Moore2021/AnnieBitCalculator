@@ -1,15 +1,15 @@
 var options = {
     stickers:{
-        randomstickerx1:0x1,
-        randomstickerx2:0x2,
+        randomstickersx1:0x1,
+        randomstickersx2:0x2,
     },
     gifts:{
-        randomgiftx1:0x3,
-        randomgiftx2:0x4,
-        randomgiftx3:0x5,
-        chocolateboxx1:0x6,
-        chocolateboxx5:0x7,
-        chocolateboxx10:0x8,
+        randomgiftsx1:0x3,
+        randomgiftsx2:0x4,
+        randomgiftsx3:0x5,
+        chocolateboxesx1:0x6,
+        chocolateboxesx5:0x7,
+        chocolateboxesx10:0x8,
     },
     currency:{
         artcoinsx50: 0x9,
@@ -23,13 +23,13 @@ var options = {
         artcoinsx5000:0x17,
         artcoinsx10000:0x18,
         artcoinsx20000:0x19,
-        luckyticketx3:0x20,
-        luckyticketx5:0x21,
-        luckyticketx10:0x22,
-        luckyticketx15:0x23,
-        luckyticketx30:0x24,
-        luckyticketx100:0x25,
-        luckyticketx200:0x26,
+        luckyticketsx3:0x20,
+        luckyticketsx5:0x21,
+        luckyticketsx10:0x22,
+        luckyticketsx15:0x23,
+        luckyticketsx30:0x24,
+        luckyticketsx100:0x25,
+        luckyticketsx200:0x26,
     },
     specialItems:{
         fragmentsx50:0x27,
@@ -43,17 +43,17 @@ var options = {
         fragmentsx10000:0x35,
         fragmentsx25000:0x36,
         fragmentsx50000:0x37,
-        magicalpaperx1:0x38,
-        magicalpaperx2:0x39,
-        magicalpaperx3:0x40,
+        magicalpapersx1:0x38,
+        magicalpapersx2:0x39,
+        magicalpapersx3:0x40,
     }
 };
-
-var calculatedBit = 0
+var gifts = {};
 
 function loadPage() {
     organizeOptions();
     populatePage();
+    recalculate();
 }
 
 function organizeOptions() {
@@ -81,13 +81,16 @@ function populatePage() {
         
 
         key.forEach(secondaryKey => {
+            var partOne = options[entries[index][0]][secondaryKey];
+            gifts[secondaryKey] = partOne;
+            
             var beginnerNode = document.createElement("UL");
             var node = document.createElement("LI");
             var checkbox = document.createElement("INPUT");
             createAttribute(checkbox, "type", "checkbox");
             createAttribute(checkbox, "id", secondaryKey);
             createAttribute(checkbox, "name", secondaryKey);    
-            createAttribute(checkbox, "onclick", `recalculate(${secondaryKey})`);  
+            createAttribute(checkbox, "onclick", `recalculate()`);  
             createAttribute(checkbox, "title", entries[index][0]); 
             
             var label = document.createElement("LABEL");
@@ -114,18 +117,57 @@ function populatePage() {
     }
 }
 
-function recalculate(item){
+function recalculate(){
 
-    console.log(calculatedBit)
-    var newBit = options[item.title][item.id];
-    if (calculatedBit == 0) {calculatedBit = newBit;}
-    if (item.checked) {
-        console.log("box is checked")
-        calculatedBit = calculatedBit | newBit
-    } else {
-        console.log("box is unchecked")
-        calculatedBit = calculatedBit ^ newBit
+    var perm = 0;
+    var eq = [];
+    var package = [];
+
+    for(var key in gifts) {
+        if(document.getElementById(key).checked) {
+            perm += gifts[key];
+            eq.push("0x" + gifts[key].toString(16));
+            package.push(packageDetails(key));
+        }
     }
+
+    eq = `${perm} = ${eq.join(" | ")}`;
     
-    document.getElementById("generatedInteger").innerHTML = calculatedBit;
+    
+    var package = packageDetailsToString(package);
+
+    document.getElementById("generatedInteger").innerHTML = perm;
+    document.getElementById("generatedEquation").innerHTML = eq;
+    document.getElementById("generatedPackage").innerHTML = package;
+
+    function packageDetails(gift) {
+        var quanity = parseInt(gift.substring(gift.lastIndexOf("x")+1));
+        var item = gift.substring(0,gift.lastIndexOf("x"));
+        return {quanity: quanity, item: item}
+    }
+
+    function packageDetailsToString(packageDetails) {
+        
+        var holder = {};
+        if (!Array.isArray(packageDetails) || !packageDetails.length) return result = "nothing yet";
+        var result = ``;
+        packageDetails.forEach(function(d) {
+          if (holder.hasOwnProperty(d.item)) {
+            holder[d.item] = holder[d.item] + d.quanity;
+          } else {
+            holder[d.item] = d.quanity;
+          }
+        });
+        
+        var resultGifts = [];
+        for (const property in holder) {
+            resultGifts.push(`${holder[property]} ${property}`);
+        }
+
+        result += `${resultGifts.join(`, `)}`
+
+        return result;
+    }
 }
+
+
