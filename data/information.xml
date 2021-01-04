@@ -42,6 +42,7 @@
 <bit>0x57</bit>
 <bit>0x64</bit>
 </bits>
+</gifts>
 <0x1>
 <bit>0x1</bit>
 <name>randomstickersx1</name>
@@ -322,4 +323,5 @@
 <group>specialItems</group>
 <item>magicalpapers</item>
 <0x64>
+</gifts>
 </root>
