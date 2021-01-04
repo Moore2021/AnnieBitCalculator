@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
+  <gifts>
 <bit_0x1>
 <bit>0x1</bit>
 <name>randomstickersx1</name>
@@ -280,4 +281,5 @@
 <group>specialItems</group>
 <item>magicalpapers</item>
 </bit_0x64>
+  </gifts>
 </root>
