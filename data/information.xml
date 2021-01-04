@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
 <stickers>
-  <item>
+  <item_1>
     <name>random_sticker</name>
     <quantity>1</quantity>
-  </item>
-  <item>
+  </item_1>
+  <item_2>
     <name>random_sticker</name>
     <quantity>2</quantity>
-  </item>
+  </item_2>
 </stickers>
 <gifts>
   <item>
