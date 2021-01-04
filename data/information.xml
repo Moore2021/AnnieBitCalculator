@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
+  <giftdata>
 <bits>
 <bit>0x1</bit>
 <bit>0x2</bit>
@@ -324,4 +325,5 @@
 <item>magicalpapers</item>
 </0x64>
 </gifts>
+</giftdata>
 </root>
